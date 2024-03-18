@@ -9,7 +9,10 @@ From: debian:bookworm
 
 # environment variables here
 %environment
-    export LANG=en_US.UTF-8 # luatex needs locale set
+    # pyenv (perl) requires setting locale
+    export LC_CTYPE=en_US.UTF-8
+    export LC_ALL=en_US.UTF-8
+    export LANG=en_US.UTF-8
 
 # A definition file has several sections, see the documentation.
 # In the `post` section you can run commands to customize
