@@ -1,26 +1,17 @@
 Bootstrap: docker
 # Bootstrap: localimage
-# Stage: base
+Stage: base
 
 From: debian:bookworm
-# you can also start building from an existing image to modify it
-# In this case, comment out this line and the line in %post that were already executed
-# From: mycontainer.sif
+# From: bookworm.sif
 
-# environment variables here
 %environment
     # pyenv (perl) requires setting locale
     export LC_CTYPE=en_US.UTF-8
     export LC_ALL=en_US.UTF-8
     export LANG=en_US.UTF-8
 
-# A definition file has several sections, see the documentation.
-# In the `post` section you can run commands to customize
-# your environment
 %post
-    # This is the place where you can
-    # install additional dependencies.
-
     ########### My basic stuffs ###########
     apt update
     apt upgrade -y
@@ -30,13 +21,10 @@ From: debian:bookworm
     apt install -y build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev curl libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
     # go (e.g. for lazygit)
     apt install -y golang
-    # locale
-    # dnf -y install glibc-locale-source glibc-langpack-en
 
     ########### Other more specific stuffs ###########
-    # luatex and gregotex
-    # dnf -y install texlive-collection-luatex texlive-collection-fontsrecommended texlive-collection-latexrecommended texlive-collection-latexextra texlive-collection-latex texlive-collection-music texlive-collection-mathscience texlive-gregoriotex
-    # dnf -y install latexmk
+    # needed for opencv
+    apt install -y libglib2.0-0 libsm6 libxrender1 libxext6
 
-    # tesseract
-    # dnf -y install tesseract tesseract-langpack-eng tesseract-langpack-ita tesseract-langpack-ita_old tesseract-script-latin tesseract-tools tesseract-osd
+%runscript
+    exec fish
