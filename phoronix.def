@@ -1,0 +1,21 @@
+Bootstrap: docker
+# Bootstrap: localimage
+Stage: base
+
+From: debian:bookworm
+# From: bookworm.sif
+
+
+%post
+    apt update
+    apt upgrade -y
+
+    # installing phoronix
+    wget https://github.com/phoronix-test-suite/phoronix-test-suite/releases/download/v10.8.4/phoronix-test-suite_10.8.4_all.deb
+    apt install ./phoronix-test-suite_10.8.4_all.deb -y
+    
+    # installing dependencies of phoronix hpc benchmark
+    phoronix-test-suite install hpc
+
+%runscript
+    phoronix-test-suite benchmark hpc
