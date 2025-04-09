@@ -3,19 +3,22 @@ Bootstrap: docker
 Stage: base
 
 From: debian:bookworm
-# From: bookworm.sif
+# From: phoronix.img
 
 
 %post
     apt update
     apt upgrade -y
 
-    # installing phoronix
+    # get the deb of phoronix
+    apt install wget -y
     wget https://github.com/phoronix-test-suite/phoronix-test-suite/releases/download/v10.8.4/phoronix-test-suite_10.8.4_all.deb
-    apt install ./phoronix-test-suite_10.8.4_all.deb -y
     
-    # installing dependencies of phoronix hpc benchmark
-    phoronix-test-suite install hpc
+    apt install -y \
+    ./phoronix-test-suite_10.8.4_all.deb  # the phoronix deb \
+    # these are the dependencies of phoronix hpc benchmark found by running `phoronix-test-suite \
+    # benchmark hpc once`\
+    unzip build-essential autoconf gfortran libopenmpi-dev openmpi-bin libmpich-dev libblas-dev libopenblas0 libopenblas-dev libatlas-base-dev liblapack-dev liblapacke-dev opencl-headers ocl-icd-libopencl1 clinfo ocl-icd-opencl-dev python3-pip python3-yaml libfftw3-dev fftw-dev libboost-all-dev libasio-dev libboost-iostreams-dev cmake cmake-data libhdf5-dev libhdf5-mpi-dev tcl tclsh zlib1g-dev flex bison libncurses5-dev libxml2-dev python3-numpy python3-scipy git-core libtiff5-dev vulkan-tools libvulkan-dev libjpeg-dev libpng-dev libsnappy-dev libgflags-dev libopencv-dev libtool meson python3-sklearn libeigen3-dev csh mesa-utils unzip apt-file 
 
-%runscript
+%runscript 
     phoronix-test-suite benchmark hpc
